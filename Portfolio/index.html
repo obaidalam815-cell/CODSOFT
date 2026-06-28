@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Aamir Khan — Web Developer</title>
+<style>
+  :root{
+    --bg:#0b0f19;
+    --surface:#121826;
+    --surface-2:#161e2e;
+    --border:#23304a;
+    --text:#e6e9ef;
+    --muted:#8b95a7;
+    --teal:#5eead4;
+    --coral:#ff6b5e;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{
+    background:var(--bg);
+    color:var(--text);
+    font-family:'Inter',system-ui,-apple-system,sans-serif;
+    line-height:1.6;
+  }
+  .mono{font-family:'JetBrains Mono','Courier New',monospace;}
+  section{padding:80px 24px;max-width:880px;margin:0 auto;}
+
+  /* ---------- terminal chrome ---------- */
+  .term{
+    background:var(--surface);
+    border:1px solid var(--border);
+    border-radius:10px;
+    overflow:hidden;
+    box-shadow:0 20px 60px -20px rgba(0,0,0,.6);
+  }
+  .term-bar{
+    display:flex;align-items:center;gap:8px;
+    padding:10px 14px;
+    background:var(--surface-2);
+    border-bottom:1px solid var(--border);
+  }
+  .dot{width:10px;height:10px;border-radius:50%;}
+  .dot.r{background:#ff5f56;} .dot.y{background:#ffbd2e;} .dot.g{background:#27c93f;}
+  .term-title{margin-left:8px;color:var(--muted);font-size:13px;}
+  .term-body{padding:28px;}
+  .prompt{color:var(--teal);}
+
+  /* ---------- header / hero ---------- */
+  header{padding:90px 24px 40px;text-align:center;}
+  .eyebrow{
+    display:inline-block;color:var(--teal);font-size:13px;
+    letter-spacing:.06em;margin-bottom:14px;
+  }
+  .cursor{display:inline-block;width:9px;height:1.1em;background:var(--teal);
+    animation:blink 1s steps(2) infinite;vertical-align:-2px;}
+  @keyframes blink{50%{opacity:0;}}
+  h1{font-size:clamp(32px,6vw,52px);font-weight:700;letter-spacing:-.02em;}
+  h1 span{color:var(--coral);}
+  .tagline{color:var(--muted);font-size:18px;margin-top:14px;max-width:520px;margin-inline:auto;}
+
+  h2.section-title{font-size:26px;margin-bottom:6px;}
+  .section-sub{color:var(--muted);font-size:14px;margin-bottom:28px;}
+
+  /* ---------- about ---------- */
+  .about-grid{display:flex;gap:32px;align-items:center;flex-wrap:wrap;}
+  .avatar{
+    width:120px;height:120px;border-radius:14px;flex-shrink:0;
+    background:linear-gradient(135deg,var(--teal),var(--coral));
+    display:flex;align-items:center;justify-content:center;
+    font-size:36px;font-weight:700;color:#0b0f19;
+  }
+  .about-text{flex:1;min-width:240px;color:var(--muted);}
+  .about-text strong{color:var(--text);}
+
+  /* ---------- skills ---------- */
+  .skills{display:flex;flex-wrap:wrap;gap:10px;}
+  .skill{
+    background:var(--surface);border:1px solid var(--border);
+    padding:8px 14px;border-radius:6px;font-size:14px;color:var(--text);
+  }
+  .skill::before{content:"▸ ";color:var(--teal);}
+
+  /* ---------- projects ---------- */
+  .projects{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:20px;}
+  .card{
+    background:var(--surface);border:1px solid var(--border);border-radius:10px;
+    overflow:hidden;transition:transform .2s,border-color .2s;
+  }
+  .card:hover{transform:translateY(-4px);border-color:var(--teal);}
+  .card-thumb{height:120px;background:linear-gradient(135deg,var(--surface-2),var(--border));}
+  .card-body{padding:18px;}
+  .card-body h3{font-size:16px;margin-bottom:6px;}
+  .card-body p{color:var(--muted);font-size:13px;margin-bottom:12px;}
+  .card-tags{display:flex;gap:6px;flex-wrap:wrap;}
+  .tag{font-size:11px;color:var(--teal);background:rgba(94,234,212,.1);padding:3px 8px;border-radius:4px;}
+
+  /* ---------- resume ---------- */
+  .resume-box{
+    display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:16px;
+    background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:24px;
+  }
+  .btn{
+    background:var(--teal);color:#0b0f19;border:none;padding:12px 22px;
+    border-radius:6px;font-weight:600;font-size:14px;cursor:pointer;text-decoration:none;
+    display:inline-block;transition:opacity .2s;
+  }
+  .btn:hover{opacity:.85;}
+
+  /* ---------- contact ---------- */
+  .contact-list{list-style:none;display:flex;flex-direction:column;gap:14px;}
+  .contact-list li{display:flex;gap:12px;align-items:center;color:var(--text);}
+  .contact-list svg{flex-shrink:0;color:var(--teal);}
+  .contact-list a{color:var(--text);text-decoration:none;}
+  .contact-list a:hover{color:var(--teal);}
+
+  /* ---------- footer ---------- */
+  footer{
+    border-top:1px solid var(--border);padding:32px 24px;
+    display:flex;justify-content:space-between;align-items:center;
+    flex-wrap:wrap;gap:12px;color:var(--muted);font-size:13px;max-width:880px;margin:0 auto;
+  }
+  footer a{color:var(--muted);text-decoration:none;margin-left:16px;}
+  footer a:hover{color:var(--teal);}
+</style>
+</head>
+<body>
+
+  <header>
+    <span class="eyebrow mono">$ whoami<span class="cursor"></span></span>
+    <h1>Obaid Alam <span>/</span> Web Developer</h1>
+    <p class="tagline">I build clean, fast, user-friendly websites — front to back.</p>
+  </header>
+
+  <!-- ABOUT -->
+  <section id="about">
+    <h2 class="section-title">About</h2>
+    <p class="section-sub mono">// a little about me</p>
+    <div class="about-grid">
+      <div class="avatar">AK</div>
+      <div class="about-text">
+        <p><strong>Hi, I'm Obaid</strong> — a front-end leaning web developer with 2+ years of
+        experience turning designs into responsive, accessible interfaces. I enjoy clean code,
+        thoughtful UX, and solving tricky layout problems.</p>
+        <p style="margin-top:10px;">Comfortable across the stack: HTML/CSS, JavaScript, React,
+        and Node — with a habit of writing code that the next developer (often future-me) can
+        actually read.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- SKILLS -->
+  <section id="skills">
+    <h2 class="section-title">Skills</h2>
+    <p class="section-sub mono">// tools I reach for</p>
+    <div class="skills">
+      <span class="skill">HTML5</span>
+      <span class="skill">CSS3 / Flexbox / Grid</span>
+      <span class="skill">JavaScript (ES6+)</span>
+      <span class="skill">React</span>
+      <span class="skill">Node.js</span>
+      <span class="skill">Git & GitHub</span>
+      <span class="skill">REST APIs</span>
+      <span class="skill">Responsive Design</span>
+    </div>
+  </section>
+
+  <!-- PROJECTS -->
+  <section id="projects">
+    <h2 class="section-title">Projects</h2>
+    <p class="section-sub mono">// things I've shipped</p>
+    <div class="projects">
+      <div class="card">
+        <div class="card-thumb"></div>
+        <div class="card-body">
+          <h3>Landing Page Builder</h3>
+          <p>A responsive marketing landing page built with semantic HTML and CSS Grid.</p>
+          <div class="card-tags"><span class="tag">HTML</span><span class="tag">CSS</span></div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-thumb"></div>
+        <div class="card-body">
+          <h3>Calculator App</h3>
+          <p>An interactive calculator with full keyboard support and operator chaining.</p>
+          <div class="card-tags"><span class="tag">JavaScript</span><span class="tag">CSS</span></div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-thumb"></div>
+        <div class="card-body">
+          <h3>Weather Dashboard</h3>
+          <p>Pulls live data from a public API and renders a clean, card-based forecast UI.</p>
+          <div class="card-tags"><span class="tag">React</span><span class="tag">API</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- RESUME -->
+  <section id="resume">
+    <h2 class="section-title">Resume</h2>
+    <p class="section-sub mono">// the paper trail</p>
+    <div class="resume-box">
+      <div>
+        <strong>Obaid_Alam_Resume.pdf</strong>
+        <p style="color:var(--muted);font-size:13px;margin-top:4px;">Updated June 2026</p>
+      </div>
+      <a class="btn" href="#" download>Download Resume</a>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section id="contact">
+    <h2 class="section-title">Contact</h2>
+    <p class="section-sub mono">// let's talk</p>
+    <ul class="contact-list">
+      <li>
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-10 6L2 7"/></svg>
+        <a href="mailto:obaidalam815@gmai.com">obaidalam815@mail.com</a>
+      </li>
+      <li>
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+        <a href="tel:+910000000000">+91 00000 00000</a>
+      </li>
+    </ul>
+  </section>
+
+  <footer>
+    <span>© 2026 Obaid Alam. All rights reserved.</span>
+    <div>
+      <a href="#">GitHub</a>
+      <a href="#">LinkedIn</a>
+      <a href="#about">Back to top</a>
+    </div>
+  </footer>
+
+</body>
+</html>

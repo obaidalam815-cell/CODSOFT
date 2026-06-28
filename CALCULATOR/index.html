@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Calculator</title>
+<style>
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{
+    min-height:100vh;
+    display:flex;align-items:center;justify-content:center;
+    background:radial-gradient(circle at 30% 20%,#3a3a40,#1a1a1d 70%);
+    font-family:'Courier New',monospace;
+  }
+
+  .calc{
+    width:320px;
+    background:#3a3a40;
+    border-radius:22px;
+    padding:22px;
+    box-shadow:0 30px 60px -15px rgba(0,0,0,.7), inset 0 1px 0 rgba(255,255,255,.05);
+  }
+
+  .screen{
+    background:#1b1b0e;
+    border-radius:10px;
+    padding:24px 18px 16px;
+    margin-bottom:18px;
+    box-shadow:inset 0 2px 8px rgba(0,0,0,.6);
+    position:relative;
+    overflow:hidden;
+  }
+  .screen::after{
+    content:"";position:absolute;inset:0;
+    background:repeating-linear-gradient(to bottom,rgba(255,255,255,.025) 0 2px,transparent 2px 4px);
+    pointer-events:none;
+  }
+  .prev{
+    color:#a8772c;font-size:13px;text-align:right;min-height:16px;
+    letter-spacing:.05em;opacity:.7;
+  }
+  .current{
+    color:#ffb000;
+    text-shadow:0 0 8px rgba(255,176,0,.6);
+    font-size:34px;text-align:right;
+    letter-spacing:.03em;
+    white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+    margin-top:4px;
+  }
+
+  .pad{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:10px;
+  }
+
+  button{
+    border:none;border-radius:10px;
+    font-family:inherit;font-size:18px;
+    height:58px;cursor:pointer;
+    color:#f0f0f0;
+    background:#4a4a50;
+    box-shadow:0 3px 0 #2c2c30, inset 0 1px 0 rgba(255,255,255,.08);
+    transition:transform .05s, box-shadow .05s;
+  }
+  button:active{
+    transform:translateY(2px);
+    box-shadow:0 1px 0 #2c2c30, inset 0 1px 0 rgba(255,255,255,.08);
+  }
+
+  .op{background:#5c4326;color:#ffd28a;}
+  .op:active{box-shadow:0 1px 0 #3a2c18,inset 0 1px 0 rgba(255,255,255,.08);}
+
+  .fn{background:#55565d;color:#cfd2d8;font-size:15px;}
+
+  .zero{grid-column:span 2;}
+
+  .equals{
+    background:#2f6f62;
+    color:#eafff8;
+  }
+  .equals:active{box-shadow:0 1px 0 #1d4a40,inset 0 1px 0 rgba(255,255,255,.08);}
+</style>
+</head>
+<body>
+
+  <div class="calc">
+    <div class="screen">
+      <div class="prev" id="prevDisplay">&nbsp;</div>
+      <div class="current" id="currentDisplay">0</div>
+    </div>
+
+    <div class="pad">
+      <button class="fn" data-action="clear">AC</button>
+      <button class="fn" data-action="sign">+/−</button>
+      <button class="fn" data-action="percent">%</button>
+      <button class="op" data-action="operator" data-op="÷">÷</button>
+
+      <button data-action="number" data-num="7">7</button>
+      <button data-action="number" data-num="8">8</button>
+      <button data-action="number" data-num="9">9</button>
+      <button class="op" data-action="operator" data-op="×">×</button>
+
+      <button data-action="number" data-num="4">4</button>
+      <button data-action="number" data-num="5">5</button>
+      <button data-action="number" data-num="6">6</button>
+      <button class="op" data-action="operator" data-op="−">−</button>
+
+      <button data-action="number" data-num="1">1</button>
+      <button data-action="number" data-num="2">2</button>
+      <button data-action="number" data-num="3">3</button>
+      <button class="op" data-action="operator" data-op="+">+</button>
+
+      <button class="zero" data-action="number" data-num="0">0</button>
+      <button data-action="decimal">.</button>
+      <button class="equals" data-action="equals">=</button>
+    </div>
+  </div>
+
+<script>
+  const currentDisplay = document.getElementById('currentDisplay');
+  const prevDisplay = document.getElementById('prevDisplay');
+
+  let current = "0";
+  let previous = "";
+  let operator = null;
+  let resultShown = false;
+
+  function updateDisplay(){
+    currentDisplay.textContent = current;
+    prevDisplay.textContent = previous && operator ? `${previous} ${operator}` : "\u00A0";
+  }
+
+  function inputNumber(num){
+    if(resultShown){
+      current = num;
+      resultShown = false;
+    } else if(current === "0"){
+      current = num;
+    } else {
+      current += num;
+    }
+    updateDisplay();
+  }
+
+  function inputDecimal(){
+    if(resultShown){
+      current = "0.";
+      resultShown = false;
+    } else if(!current.includes(".")){
+      current += ".";
+    }
+    updateDisplay();
+  }
+
+  function chooseOperator(op){
+    if(operator && previous !== ""){
+      compute();
+    }
+    operator = op;
+    previous = current;
+    current = "0";
+    resultShown = false;
+    updateDisplay();
+  }
+
+  function compute(){
+    const a = parseFloat(previous);
+    const b = parseFloat(current);
+    if(isNaN(a) || isNaN(b)) return;
+
+    let result;
+    if(operator === "+"){
+      result = a + b;
+    } else if(operator === "−"){
+      result = a - b;
+    } else if(operator === "×"){
+      result = a * b;
+    } else if(operator === "÷"){
+      result = b === 0 ? "Error" : a / b;
+    } else {
+      result = b;
+    }
+
+    if(result === "Error"){
+      current = "Error";
+    } else {
+      current = String(Math.round(result * 1e10) / 1e10);
+    }
+    operator = null;
+    previous = "";
+    resultShown = true;
+    updateDisplay();
+  }
+
+  function clearAll(){
+    current = "0";
+    previous = "";
+    operator = null;
+    resultShown = false;
+    updateDisplay();
+  }
+
+  function toggleSign(){
+    if(current === "0" || current === "Error") return;
+    current = current.startsWith("-") ? current.slice(1) : "-" + current;
+    updateDisplay();
+  }
+
+  function toPercent(){
+    current = String(parseFloat(current) / 100);
+    updateDisplay();
+  }
+
+  document.querySelectorAll('button').forEach(btn=>{
+    btn.addEventListener('click', ()=>{
+      const action = btn.dataset.action;
+      if(action === "number"){
+        inputNumber(btn.dataset.num);
+      } else if(action === "decimal"){
+        inputDecimal();
+      } else if(action === "operator"){
+        chooseOperator(btn.dataset.op);
+      } else if(action === "equals"){
+        compute();
+      } else if(action === "clear"){
+        clearAll();
+      } else if(action === "sign"){
+        toggleSign();
+      } else if(action === "percent"){
+        toPercent();
+      }
+    });
+  });
+
+  // keyboard support
+  window.addEventListener('keydown', (e)=>{
+    if(e.key >= "0" && e.key <= "9") inputNumber(e.key);
+    else if(e.key === ".") inputDecimal();
+    else if(e.key === "+") chooseOperator("+");
+    else if(e.key === "-") chooseOperator("−");
+    else if(e.key === "*") chooseOperator("×");
+    else if(e.key === "/") chooseOperator("÷");
+    else if(e.key === "Enter" || e.key === "=") compute();
+    else if(e.key === "Escape") clearAll();
+  });
+
+  updateDisplay();
+</script>
+
+</body>
+</html>
